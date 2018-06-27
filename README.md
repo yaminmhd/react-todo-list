@@ -24,5 +24,5 @@ Tasks
 
 Bonus tasks:
 Create a TodoFilterBar component which:
-      - allows the user to filter todos by inputting a search string and hitting a 'Filter' button. Todos that do not match the search string should be hidden from display
-      - allows the user to see all Todos again when he hits a 'See all todos' button
+- allows the user to filter todos by inputting a search string and hitting a 'Filter' button. Todos that do not match the search string should be hidden from display
+- allows the user to see all Todos again when he hits a 'See all todos' button
