@@ -1,12 +1,11 @@
 import React from "react";
+import {List} from 'semantic-ui-react'
 
-const Todo = ({ todo, handleClick }) => {
-  const cssToApply = todo.isCompleted ? "done" : "";
+const Todo = ({ todo:{name, isCompleted}, handleClick, index }) => {
+  const cssToApply = isCompleted ? "done" : "";
 
   return (
-    <li className={cssToApply} onClick={handleClick}>
-      {todo.name}
-    </li>
+    <List.Item className={cssToApply} onClick={() => handleClick(index)} icon={'angle right'} content={name}/>
   );
 };
 

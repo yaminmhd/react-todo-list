@@ -3,113 +3,84 @@ import { todos } from "./seedData";
 import Todo from "./Todo";
 import TodoCreationBar from "./TodoCreationBar";
 import TodoFilterBar from "./TodoFilterBar";
+import { Container, Header, List } from "semantic-ui-react";
 
 class TodoList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       todos,
-      keyword: "",
-      filteredTodos: [],
-      newTodo: { name: "", isCompleted: false }
+      filteredTodos: []
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.inputChange = this.inputChange.bind(this);
-    this.handleFilter = this.handleFilter.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleViewAllTodos = this.handleViewAllTodos.bind(this);
   }
 
-  handleSubmit(event) {
+  handleSubmit = (todo, event) => {
     event.preventDefault();
-    const updatedTodos = [...this.state.todos, this.state.newTodo];
+    console.log(todo);
+    const updatedTodos = [...this.state.todos, todo];
     this.setState({
-      todos: updatedTodos,
-      newTodo: {
-        name: "",
-        isCompleted: false
-      }
+      todos: updatedTodos
     });
-  }
+  };
 
-  inputChange(event) {
+  handleClick = index => {
+    const updatedTodoList = [...this.state.todos];
+    const filterClone = [...this.state.filteredTodos];
+    if (filterClone.length > 0) {
+      filterClone[index].isCompleted = !filterClone[index].isCompleted;
+    }
+    updatedTodoList[index].isCompleted = !updatedTodoList[index].isCompleted;
     this.setState({
-      newTodo: {
-        name: event.target.value,
-        isCompleted: false
-      }
+      todos: updatedTodoList,
+      filteredTodos: filterClone
     });
-  }
+  };
 
-  handleClick(index) {
-    //select the target element using index in a new list
-    const newTodoList = [...this.state.todos];
-    const elementSelected = newTodoList[index];
-
-    const checkCompletedValue = elementSelected.isCompleted;
-    checkCompletedValue
-      ? (elementSelected.isCompleted = false)
-      : (elementSelected.isCompleted = true);
-
-    this.setState({
-      todos: newTodoList
-    });
-  }
-
-  handleFilter(event) {
+  handleFilter = (keyword, event) => {
     event.preventDefault();
-    const { keyword, todos } = this.state;
+    const { todos } = this.state;
     const filteredTodos = todos.filter(todo => {
-      const name = todo.name.toLowerCase();
-      return name.indexOf(keyword) > -1;
+      return todo.name.toLowerCase().includes(keyword);
     });
     this.setState({
       filteredTodos
     });
-    return filteredTodos;
-  }
+  };
 
-  handleInputChange(event) {
-    this.setState({
-      keyword: event.target.value.toLowerCase()
-    });
-  }
-
-  handleViewAllTodos(event) {
+  handleViewAllTodos = event => {
     event.preventDefault();
     this.setState({
       filteredTodos: []
     });
-  }
+  };
 
   render() {
     const { todos, filteredTodos } = this.state;
-    const verifyWhichTodoListToMap =
+    const verifyWhichTodoToMap =
       filteredTodos.length > 0 ? filteredTodos : todos;
-    const mapTodos = verifyWhichTodoListToMap.map((todo, index) => {
+    const mapTodos = verifyWhichTodoToMap.map((todo, index) => {
       return (
         <Todo
           key={index}
+          index={index}
           todo={todo}
-          handleClick={() => this.handleClick(index)}
+          handleClick={this.handleClick}
         />
       );
     });
+
     return (
-      <div>
-        <TodoFilterBar
-          keyword={this.state.keyword}
-          handleInputChange={this.handleInputChange}
-          handleFilter={this.handleFilter}
-          handleViewAllTodos={this.handleViewAllTodos}
-        />
-        <TodoCreationBar
-          inputChange={this.inputChange}
-          formSubmit={this.handleSubmit}
-          newTodo={this.state.newTodo}
-        />
-        <ul>{mapTodos}</ul>
-      </div>
+      <Container text style={{ marginTop: "50px" }}>
+        <Header as="h2">My Todo List</Header>
+        <div>
+          <TodoFilterBar
+            handleFilter={this.handleFilter}
+            handleViewAllTodos={this.handleViewAllTodos}
+          />
+          <TodoCreationBar formSubmit={this.handleSubmit} />
+          <List>{mapTodos}</List>
+        </div>
+      </Container>
     );
   }
 }
