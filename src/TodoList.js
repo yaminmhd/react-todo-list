@@ -58,7 +58,7 @@ class TodoList extends Component {
       filteredTodos.length > 0 ? filteredTodos : todos;
     const mapTodos = verifyWhichTodoToMap.map((todo, index) => {
       return (
-        <Todxo
+        <Todo
           key={index}
           index={index}
           todo={todo}
