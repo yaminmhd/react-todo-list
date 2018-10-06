@@ -14,16 +14,14 @@ class TodoList extends Component {
     };
   }
 
-  handleSubmit = (todo, event) => {
-    event.preventDefault();
-    console.log(todo);
+  addNewTodo = (todo) => {
     const updatedTodos = [...this.state.todos, todo];
     this.setState({
       todos: updatedTodos
     });
   };
 
-  handleClick = index => {
+  toggleTaskStatus = index => {
     const updatedTodoList = [...this.state.todos];
     const filterClone = [...this.state.filteredTodos];
     if (filterClone.length > 0) {
@@ -36,7 +34,7 @@ class TodoList extends Component {
     });
   };
 
-  handleFilter = (keyword, event) => {
+  filterTodo = (keyword, event) => {
     event.preventDefault();
     const { todos } = this.state;
     const filteredTodos = todos.filter(todo => {
@@ -60,11 +58,11 @@ class TodoList extends Component {
       filteredTodos.length > 0 ? filteredTodos : todos;
     const mapTodos = verifyWhichTodoToMap.map((todo, index) => {
       return (
-        <Todo
+        <Todxo
           key={index}
           index={index}
           todo={todo}
-          handleClick={this.handleClick}
+          handleClick={this.toggleTaskStatus}
         />
       );
     });
@@ -74,10 +72,10 @@ class TodoList extends Component {
         <Header as="h2">My Todo List</Header>
         <div>
           <TodoFilterBar
-            handleFilter={this.handleFilter}
+            handleFilter={this.filterTodo}
             handleViewAllTodos={this.handleViewAllTodos}
           />
-          <TodoCreationBar formSubmit={this.handleSubmit} />
+          <TodoCreationBar formSubmit={this.addNewTodo} />
           <List>{mapTodos}</List>
         </div>
       </Container>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Form } from 'semantic-ui-react';
+import { Button, Form } from "semantic-ui-react";
 
 class TodoCreationBar extends Component {
   constructor(props) {
@@ -18,8 +18,18 @@ class TodoCreationBar extends Component {
     });
   };
 
+  handleSubmit = (newTodo, event) => {
+    event.preventDefault();
+    this.props.formSubmit(newTodo);
+    this.setState({
+      newTodo: {
+        name: "",
+        isCompleted: false
+      }
+    });
+  };
+
   render() {
-    const { formSubmit } = this.props;
     const {
       newTodo,
       newTodo: { name }
@@ -27,22 +37,16 @@ class TodoCreationBar extends Component {
     return (
       <Form
         onSubmit={event => {
-          formSubmit(newTodo, event);
-          this.setState({
-            newTodo: {
-              name: "",
-              isCompleted: false
-            }
-          });
+          this.handleSubmit(newTodo, event);
         }}
       >
-      <Form.Field>
-        <input
-          value={name}
-          onChange={this.inputChange}
-          type="text"
-          placeholder="Enter a todo"
-        />
+        <Form.Field>
+          <input
+            value={name}
+            onChange={this.inputChange}
+            type="text"
+            placeholder="Enter a todo"
+          />
         </Form.Field>
         <Button type="submit">Add todo</Button>
       </Form>

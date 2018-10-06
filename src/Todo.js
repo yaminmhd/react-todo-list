@@ -2,6 +2,7 @@ import React from "react";
 import {List} from 'semantic-ui-react'
 
 const Todo = ({ todo:{name, isCompleted}, handleClick, index }) => {
+
   const cssToApply = isCompleted ? "done" : "";
 
   return (
